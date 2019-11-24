@@ -1,0 +1,102 @@
+Command line commands - 1
+        configure project at current path with CMakeLists.txt also at the current path. Use cmake with two following dots if you are in a build directory but the CMakeLists.txt file is in the parent directory - 2
+        builds the project in the current directory (Debug or Release Folder) - 6
+        build is not only for building, it can also be used to perform different kinds of operations with different targetnames - 11
+        Sets variable called USE_LIBRARY to true, which is defined in the CMakeLists.txt - 17
+        changes build generator to Visual Studio 2017 - 21
+        changes compiler to clang++ - 25
+        check current system-information for cmake, which includes things like the currently used compiler and write it to info.txt - 28
+        Changes the build type to Debug - 32
+        Builds Release - 36
+        Shows more information regarding the build process - 40
+
+CMakeLists.txt guide - 44
+        sets the minimum required cmake version to 3.10 and shows an fatal error if it is not the case - 46
+        sets the project name to hello-world and the default language to c++ - 49
+        adds a target called hello-world and hello-world.cpp as dependency - 53
+        Creates a static library called message from Message.hpp and Message.cpp (libmessage.lib on Windows) - 57
+        Creates object files from the source files to be able to create STATIC and SHARED libraries at the same time - 63
+        Gets the target objects from the message-objs (in this case: Message.hpp Message.cpp) - 68
+        links against the message library to create the hello-world executable - 72
+        adds include directory to search for (for the compiler) - 76
+        Sets property  POSITION_INDEPENDENT_CODE to true for the target message-objs - 80
+        Sets the output library name of message_shared to message - 84
+        Create a variable called USE_LIBRARY and set its value to FALSE - 89
+        Unset a variable - 92
+        Set the BUILD_SHARED_LIBS variable, which is defined in CMake to FALSE, add_library without a second parameter now creates a static library instead of a shared one as default - 96
+        Create a list called _sources with the two source files as values - 100
+        Print a message with a string and variable in the string - 108
+        If USE_LIBRARY == true, add a library called message with the content of  the _sources list as source files - 112
+        Else statement - 118
+        Creates a variable USE_LIBRARY and sets it standard value to FALSE, but the user can change the value from the cmake command (cmake -D USE_LIBRARY=TRUE ..) - 127
+        Creates a new option called MAKE_STATIC_LIB which is FALSE if the USE_LIBRARY is TRUE - 135
+        Set compile options for specific library or target called < targetname > to the flags specified in the < flaglist > list - 139
+        Set different compiler flags for different compiler - 149
+        Set C++ Language specific options of target. C++ Version to 14, extensions off and standard required in this case if version 14 is required or not - 164
+        Set Compile feature requirement for < targetname >. In this case the constexpr feature of c++ has to be available for the target - 168
+        Foreach loop - 172
+        Get property of specific source file - 186
+        Different ways to create a for loop - 195
+        Detect operting system - 214
+        Platform dependend code/operations - 226
+        Detect Compiler - 236
+        Detect processor architecture - 244
+        Set preprocessor definition called ARCHITECTURE to the architecture detected by CMake in < targetname >** - 254
+        Add sources to target outside of add_executable - 260
+        Detect additional system/processor information - 265
+        Find library on the system - 275
+        Check for cxx compiler flags - 291
+        Execute cmd/terminal command - 298
+        Print variable with CMakePrintHelpers - 310
+        Find package and check for valid variables/paths - 315
+        Custom command to produce an output file(s) - 320
+        Use IMPORTED type in target_link_libraries to use library defined compiler options/include directories etc. - 334
+        Print target properties - 339
+        Use only a COMPONENT from a library - 345
+        Use pgk-config to find libraries - 351
+        Platform independent file operations - 357
+        Get Python CFFI Lib version with execute_process - 365
+        Use outputs from add_custom_command as source files with add_custom_target - 372
+        Custom commands at specific time before build or linkage - 383
+        Check if source files can successfully compile - 393
+        Check if compiler flags work with the current buildsystem/compiler - 413
+        Use Sanitizer for error detection - 419
+        Check if a executable can be run on the system - 433
+        Use Generator expressions to configure at generation time - 449
+        Configure source code with system information obtained from CMake - 463
+        Distribute CMake project version to source files - 491
+        Read Version from VERSION file - 516
+        Get git hash from git project (at configure time) - 534
+        Get git hash string at build time - 544
+        CMake functions, macros - 579
+        Parse specific function arguments - 599
+        Working with CMake modules ( .cmake files) - 609
+        CMake include guard to prevent multiple includes for a module - 618
+        Deprecating functions - 645
+        Using multiple CMakeLists.txt in different subdirectories - 671
+        Configure target sources/include_directories/link_libraries from another CMakeLists.txt - 695
+        Superbuild: Download and install library if not found - 700
+        Mixing C++ and Python - 709
+        CMake Installer - 716
+        Hide shared library symbols - 790
+        Exporting target (Creating < library >Config.cmake ) - 825
+        set Include directories/Compile definitions etc. only after installation or build - 863
+        Installing a superbuild - 869
+        Porting a project to CMake - 871
+
+Cross compiling - 875
+        Compiling a Windows executable on Linux - 877
+
+Packaging library using CPack - 929
+
+Building Documentation with Cmake and Doxygen - 1024
+
+CMake/CTest to test software - 1032
+
+CMake relevant variables - 1185
+
+Additional Info - 1271
+
+Write own Find< libraryname >.cmake file  - 1276
+
+Visualizing dependencies with Graphviz - 1404
