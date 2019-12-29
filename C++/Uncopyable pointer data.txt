@@ -1,0 +1,4 @@
+C++ Rule of 3/5 / deep copy / data that can't be deep copied
+
+If you have a pointer as member in a class, you need to deep copy the data in the copy constructor and assignment operator, so there are not 2 pointer that point to the same data in these cases
+If there is uncopyable data in a class, you cant do that, so you either instantiate that class only with smart pointer or delete the copy constructor/= operator and create a move constructor/= operator.
