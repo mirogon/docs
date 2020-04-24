@@ -1,0 +1,4 @@
+/etc/hosts - DNS file which overrides DNS settings for specific ips
+/etc/nsswitch.conf - name related precedence settings for the DNS
+/etc/services - file that contains descriptions for port usages
+/etc/ld.so.conf / /etc/ld.so.conf.d/ - holds search paths for shared libraries (use ldconfig -v to synchronize changes)

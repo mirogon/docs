@@ -1,0 +1,89 @@
+grep root /etc/passwd - searches for the string "root" in files in /etc/passwd and shows files with matching strings 
+pwd - show current path
+diff file1 file2 - compare file1 and file2 and show the difference
+file file - shows file type information about the file
+find dir -name file -print - find file in dir named file
+sort  - puts lines of a text file in alphanumerical order
+man - documentation of commands/programs/etc
+info - similar to man
+command > file - outputs standard output of command to file
+command >> file - outputs standard output of command to file and append
+command1 | command2 - pipes the output of command1 to input of command2
+command > file 2>&1 - write output and error of command to file
+touch text.txt - create new file text.txt
+gunzip file.gz - unzip file.gz
+chmod +r file - add read permissions of file to user
+ln -s target linkname - add symbolic link of target as linkname
+tar - pack or unpack archives
+udevadm info --query=all --name=/dev/sda - show information about device /dev/sda
+udevadm monitor - monitor uevents
+lsscsi -g - show generic devices
+parted -l - show partition table
+mkfs -t ext4 /dev/sdd2 - create ext4 filesystem on /dev/sdd2 partition
+mount -t ntfs /dev/sda1 /mnt/sda1 - mount disk /dev/sda1 to /mnt/sda1
+umount /dev/sda1 - unmount disk /dev/sda1
+blkid - show device UUIDS
+df - show size and utilization of mounted filesystems
+fsck /dev/sdb2 - check filesystem of /dev/sdb2
+who - show current user
+dd if=/dev/zero of=new_file bs=1024 count=1 - copy 1024 bytes from /dev/zero to new_file 
+chvt - change foreground virtual terminal
+systemctl list-units - show systemd units
+systemctl list-jobs - show systemd running jobs
+shutdown -h now - shut down system now
+shutdown -r +5 - restart system in 5minutes
+logger -p daemon.info this is a test log - use the logger to log a message attatched to daemon.info
+hwclock --hctosys --utc - set mainboard realtime clock to kernels utc time
+date +%s - show seconds since january 1 1970 12pm
+passwd - change password/username
+vipw - edit etc/passwd file directly
+vipw -s - edit etc/shadow file directly
+adduser - add user
+userdel - delete user
+groups - show groups on the system
+date - show current date
+hwclock - set system time to RTC ( real-time clock ) of the mainboard
+at 10:30 - run a job at 10:30 am
+atq - see scheduled jobs
+atrm - remove scheduled job
+strace - see system calls of process
+ltrace - see shared library calls of process
+ps - show running processes
+kill 55 - terminate process with pid 55
+top - show running processes with a better overview of the used resourced
+renice 20 pid - change the nice value of a process to 20. The nice value changes the schedule of the cpu time of specific processes.
+uptime - shows the time the system is running for and the load averages of the cpu from the past 5 10 and 15 minutes.
+free - shows the total and currently used memory
+vmstat - cpu and memory monitoring
+iostat - show disk usage in reads and writes per second.
+iotop - shows disk usage per process in realtime
+pidstat - cpu/memory/disk monitoring of processes in intervals ( similar to top )
+ifconfig - show network information such as the systems LAN-IP address
+route -n - show routing table
+traceroute 191.168.1.1 pings a packet to the host and shows its route and times
+host google.com - shows the ip4/6 address of the host ( google.com )
+ifconfig eth0 192.168.1.100 netmask 255.255.255.0 - set ip address of network interface eth0 to 192.168.1.100 with the mask 255.255.255.0
+route add default gw 192.168.1.1 - set default gateway address to 192.168.1.1
+route del -net default - remove default gateway
+netstat - show currently connected ports
+dhclient eth0 - dhcp for eth0 ( gets ip addres, gateway, mask, etc from the router )
+iptables - view/change firewall settings
+arp - show hardware addresses of ip addresses (Address Resolution Protocol)
+iw dev wlan0 scan - scan for available wlan interfaces
+iw wlan0 connect [network_name] - connect to the network network_name which has no password
+telnet www.wikipedia.org 80 - connect to www.wikipedia.org through the port 80
+ssh - connect to a remote host via ssh
+scp file user@host:dir - transfer file to host:dir via ssh
+lsof -i - shows programs using or listening to ports
+tcpdump - shows every packet that crosses the network
+netcat -l -p 80 - listen to port 80
+nmap localhost - list open ports on localhost
+mktemp /tmp/im1.XXXXXX - creates temp file with a random name (replaces the XXXXXX with something unique)
+xwininfo - select a window to view information about it
+xlsclients -l - overview of all windows
+xev - create a new window and show events
+xinpt --list - list all input devices
+ldd program - list shared libraries used/needed by the program
+ldconfig -v - synchronize shared library search paths
+apt-file search test.h - searches for developement packages needed by the file
+

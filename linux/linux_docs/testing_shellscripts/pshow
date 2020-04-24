@@ -1,0 +1,3 @@
+#!/bin/sh
+echo This is your first arg: $1
+echo This is your second arg: $2	
