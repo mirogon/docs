@@ -1,25 +1,28 @@
 ﻿# Overview
 
-# Main
+# Basic
 ## 1. <a href="#1"> How to build with CMake from the command line</a>
 ## 2. <a href="#2">Basic CMakeLists.txt file</a>
 ## 3. <a href="#3">Building Libraries</a>
 ## 4. <a href="#4">Using Libraries</a>
-## 5. <a href="#5">Variables</a>
-## 6. <a href="#6">Print</a>
-## 7. <a href="#7">Conditions</a>
-## 8. <a href="#8">Compiler Options</a>
-## 9. <a href="#9">Configure Source Files</a>
+## 5. <a href="#5">Find Libraries</a>
+## 6. <a href="#6">Multiple CMakeLists.txt files</a>
+## 7. <a href="#7">Variables</a>
+## 8. <a href="#8">Print</a>
+## 9. <a href="#9">Conditions</a>
 ## 10. <a href="#10">Loops</a>
-## 11. <a href="#11">Platform Dependency</a>
-## 12. <a href="#12">Hardware Dependency</a>
-## 13. <a href="#13">Find Libraries</a>
+## 11. <a href="#11">Compiler Options</a>
+## 12. <a href="#12">Platform Dependency</a>
+## 13. <a href="#13">Hardware Dependency</a>
+
+# Advanced
+
+## 9. <a href="#9">Configure Source Files</a>
 ## 14. <a href="#14">Execute Terminal/Console Commands</a>
 ## 15. <a href="#15">File Operations</a>
 ## 16. <a href="#16">Try to Compile</a>
 ## 17. <a href="#17">Functions and Macros</a>
 ## 18. <a href="#18">CMake Modules</a>
-## 19. <a href="#19">Multiple CMakeLists.txt files</a>
 ## 20. <a href="#20">Installing</a>
 ## 21. <a href="#21">Hiding Symbols</a>
 ## 22. <a href="#22">Cross Compiling</a>
@@ -144,7 +147,41 @@ Creates a static library called message from Message.hpp and Message.cpp (libmes
 
 	target_sources(< targetname > PRIVATE test.cpp)
 
-<div id="5"></div>
+<div id="6"></div>
+
+# Multiple CMakeLists.txt files
+
+### Using multiple CMakeLists.txt in different subdirectories
+
+The command add_subdirectory( < subdirectory > ) processes the CMakeLists.txt in the given < subdirectory >. Every target and source file that is defined in that CMakeLists.txt is now also defined in the CMakeLists.txt, that called the add_subdirectory command.
+
+example
+
+src/CMakeLists.txt
+
+	add_library(evolution "")
+	target_sorces(evolution PRIVATE evolution.cpp PUBLIC evolution.h)
+	#needed, so the other CMakeLists.txt also has this include directory
+	target_include_directories(evolution PUBLIC ${CMAKE_CURRENT_LIST_DIR})
+
+./CMakeLists.txt
+
+	add_subdirectory(evolution)
+	add_executable(test test.cpp)
+	target_link_libraries(test evolution)
+**Prevent in source build ( force build folder )
+
+	if(${PROJECT_SOURCE_DIR} STREQUAL ${PROJECT_BINARY_DIR})
+		message(FATAL_ERROR "In-source builds are not allowed. Please make a build directory and run CMake from there")
+	endif()
+
+### Configure target sources/include_directories/link_libraries from another CMakeLists.txt
+
+When another CMakeLists.txt is used via add_subdirectory, it is not possible to configure the target_sources for a target created in the added CMakeLists.txt. This can be done with include(src/CMakeLists.txt) instead of add_subdirectory(src
+)
+
+
+<div id="7"></div>
 
 # Variables
 
@@ -172,7 +209,7 @@ lists can also be created with set
 	
 	option(USE_LIBRARY "Compile sources into a library" FALSE)
 
-<div id="6"></div>
+<div id="8"></div>
 
 # Print
 
@@ -186,7 +223,7 @@ lists can also be created with set
 	include(CMakePrintHelpers)
 	cmake_print_variables( < variablename1 > < variablename 2 > ...)
 
-<div id="7"></div>
+<div id="9"></div>
 
 # Conditions
 
@@ -213,7 +250,7 @@ lists can also be created with set
 	
 	cmake_dependent_option(MAKE_STATIC_LIB FALSE "USE_LIBRARY" TRUE)
 
-<div id="8"></div>
+<div id="11"></div>
 
 # Compiler options
 
@@ -382,7 +419,7 @@ get_source_file_property stores the type of property specified in arg3 from arg2
 	#4 I dont understand, read doc if you want to know
 	foreach(file IN ITEMS ...)
 
-<div id="11"></div>
+<div id="12"></div>
 
 # Platform Dependency
 
@@ -415,7 +452,7 @@ visibilities are the same as in target_compile_options
 		target_compile_definitions(< targetname > PUBLIC "IS_INTEL_CXX_COMPILER")
 	endif()
 	
-<div id="12"></div>
+<div id="13"></div>
 
 # Hardware Dependency
 
@@ -446,7 +483,7 @@ example values cmake uses are "i386", "i686", "x86_64"
 	
 	configure_file(config.h.in config.h @ONLY)
 
-<div id="13"></div>
+<div id="5"></div>
 
 # Find Libraries
 
@@ -688,38 +725,6 @@ here is an example of a include_guard macro, that works with version 3.10 and lo
 		endif()
 	endmacro()
 
-<div id="19"></div>
-
-# Multiple CMakeLists.txt files
-
-### Using multiple CMakeLists.txt in different subdirectories
-
-The command add_subdirectory( < subdirectory > ) processes the CMakeLists.txt in the given < subdirectory >. Every target and source file that is defined in that CMakeLists.txt is now also defined in the CMakeLists.txt, that called the add_subdirectory command.
-
-example
-
-src/CMakeLists.txt
-
-	add_library(evolution "")
-	target_sorces(evolution PRIVATE evolution.cpp PUBLIC evolution.h)
-	#needed, so the other CMakeLists.txt also has this include directory
-	target_include_directories(evolution PUBLIC ${CMAKE_CURRENT_LIST_DIR})
-
-./CMakeLists.txt
-
-	add_subdirectory(evolution)
-	add_executable(test test.cpp)
-	target_link_libraries(test evolution)
-**Prevent in source build ( force build folder )
-
-	if(${PROJECT_SOURCE_DIR} STREQUAL ${PROJECT_BINARY_DIR})
-		message(FATAL_ERROR "In-source builds are not allowed. Please make a build directory and run CMake from there")
-	endif()
-
-### Configure target sources/include_directories/link_libraries from another CMakeLists.txt
-
-When another CMakeLists.txt is used via add_subdirectory, it is not possible to configure the target_sources for a target created in the added CMakeLists.txt. This can be done with include(src/CMakeLists.txt) instead of add_subdirectory(src
-)
 
 <div id="20"></div>
 
