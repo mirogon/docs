@@ -26,7 +26,7 @@
 //char pointer that points to a single char<br>
 **char\* cp = new char{'a'}**
 
-//ú<br>
+//Init char pointer with already existing char<br>
 **char c;**<br>
 **char\* cp = &c;**<br>
 
