@@ -1,4 +1,4 @@
-# char, char*, char[] 
+# char, char[], char*, char**
 
 ## char
 
@@ -41,3 +41,46 @@
 **char\* cp = arr**
 
 
+# char**
+
+**A char\*\* points to a address of a char\***<br>
+**The point of a char\*\* is, that it can store an array of char arrays, so multiple c-strings**
+
+
+## Initialization examples
+
+~~~~c++
+//Create a char** and store 3 c-strings/3 char arrays in sequential memory<br>
+char** charPointerPointer = new char*[3];
+char** charPointerPointerStartAddress = charPointerPointer;
+~~~~
+
+~~~~c++
+//First char array
+*charPointerPointer = new char[]{"Hello1"};
+++charPointerPointer;
+~~~~
+
+~~~~c++
+//Second char array
+*charPointerPointer = new char[]{"Hello2"};
+++charPointerPointer;
+~~~~
+
+~~~~c++
+//Third char array
+*charPointerPointer = new char[]{"Hello3"};
+~~~~
+
+~~~~c++
+charPointerPointer = charPointerPointerStartAddress;
+~~~~
+
+
+~~~~c++
+//Print all 3 c-strings
+for(int i = 0; i < 3; ++i)
+{
+    std::cout<<"charPointerPointer["<<i<<"]"<<charPointerPointer[i]<<std::endl;
+}
+~~~~
