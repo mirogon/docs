@@ -17,12 +17,12 @@
 
 # Advanced
 
-## 9. <a href="#9">Configure Source Files</a>
-## 14. <a href="#14">Execute Terminal/Console Commands</a>
-## 15. <a href="#15">File Operations</a>
-## 16. <a href="#16">Try to Compile</a>
-## 17. <a href="#17">Functions and Macros</a>
-## 18. <a href="#18">CMake Modules</a>
+## 14. <a href="#14">Configure Source Files</a>
+## 15. <a href="#15">Execute Terminal/Console Commands</a>
+## 16. <a href="#16">File Operations</a>
+## 17. <a href="#17">Try to Compile</a>
+## 18. <a href="#18">Functions and Macros</a>
+## 19. <a href="#19">CMake Modules</a>
 ## 20. <a href="#20">Installing</a>
 ## 21. <a href="#21">Hiding Symbols</a>
 ## 22. <a href="#22">Cross Compiling</a>
@@ -147,6 +147,55 @@ Creates a static library called message from Message.hpp and Message.cpp (libmes
 
 	target_sources(< targetname > PRIVATE test.cpp)
 
+<div id="5"></div>
+
+# Find Libraries
+
+### Find library on the system
+
+**Look for package/library named < libraryname > with the < libraryversion> and set it as requirement of the project. CONFIG disables the module mode and uses CONFIG mode instead**
+**After this command, some variables are usually defined, check variables section**
+
+	find_package(< libraryname > < libraryversion > REQUIRED CONFIG)
+
+additional information:
+
+MODULE mode searches a file named Find< libraryname >.cmake and gets all required information about the library. Often the library path is obtained from an environment variable.
+CMake finds the Find< libraryname >.cmake file either through CMake's own defined .cmake files for many standard libraries which are located in the CMake/share/cmake/Modules path or through additional paths which can be provided by the CMAKE_MODULE_PATH variable.
+
+Read Find< libraryname >.cmake comment to see, which environment variable has to be set
+
+CONFIG mode searches for a file name < libraryname >Config.cmake additional paths to search in can be provided by the < libraryname >_DIR variable.
+
+### Find package and check for valid variables/paths
+**the package will only be considered found if the REQUIRED_VARS and VERSION_VAR is valid**
+	
+	find_package_handle_standard_args(< libraryname > FOUND_VAR found_vars REQUIRED_VARS path VERSION_VAR version)
+
+### Use IMPORTED type in target_link_libraries to use library defined compiler options/include directories etc.
+**Use the OpenMP::OpenMP_CXX library target to use the library defined C++ settings ( has to be available from the lib )**
+	find_package(OpenMP REQUIRED)
+	target_link_libraries( < targetname > PUBLIC OpenMP::OpenMP_CXX)
+
+### Print target properties
+**Print the OpenMP library defined properties such as compile options, include dirs and link libraries**
+	
+	include(CMakePrintHelpers)	
+	cmake_print_properties(TARGETS OpenMP::OpenMP_CXX PROPERTIES INTERFACE_COMPILE_OPTIONS INTERFACE_INCLUDE_DIRECTORIES INTERFACE_LINK_LIBRARIES )
+
+### Use only a COMPONENT from a library
+**Find the subcomponent filesystem in boost and link the target against it**
+
+	find_package(Boost 1.54 REQUIRED COMPONENTS filesystem)
+	target_link_libraries( < targetname > PUBLIC Boost::filesystem)
+
+### Use pgk-config to find libraries
+**Use the PkgConfig package to search for the ZeroMQ library with pkg_search_module**
+
+	find_package(PkgConfig REQUIRED QUIET)
+	pkg_search_module(ZeroMQ REQUIRED libzeromq libzmq lib0mq IMPORTED_TARGET)
+
+
 <div id="6"></div>
 
 # Multiple CMakeLists.txt files
@@ -250,6 +299,51 @@ lists can also be created with set
 	
 	cmake_dependent_option(MAKE_STATIC_LIB FALSE "USE_LIBRARY" TRUE)
 
+<div id="10"></div>
+
+# Loops
+
+### Foreach loop
+**!TAG! Set propertie of specific source file**
+**Use Foreach loop to set compile flags of specific source files. In this case loop through every source file in the list sources_with_lower_optimization and set the compiler flag O2**
+	
+	foreach(_source IN LISTS sources_with_lower_optimization)  
+		set_source_file_properties(${_source} PROPERTIES COMPILE_FLAGS O2)
+	endforeach()
+
+the foreach statement can also be written like this:
+
+	foreach(_source ${sources_with_lower_optimization}
+	
+### Get property of specific source file
+**Use foreach loop to get the compile flags of every source file in the list sources_with_lower_optimization**
+
+	foreach(_source ${sources_with_lower_optimization})  
+		get_source_file_property(_flags ${_source} COMPILE_FLAGS)  
+		message(STATUS "Source ${_source} has the following extra COMPILE_FLAGS: ${_flags}") 		
+	endforeach()
+get_source_file_property stores the type of property specified in arg3 from arg2 in arg1
+
+### Different ways to create a for loop
+
+	#boiler code
+	list(APPEND _files file1.cpp file2.cpp file3.cpp)	
+
+	#1 loop through every file in files
+	foreach(file ${files})
+	
+	#2 3 loops
+	foreach(file RANGE 3)
+	#2.1 from 1 to 3 in steps incremented by 1
+	foreach(file RANGE 1 3 1)
+	
+	#3 same as #1
+	foreach(file IN LISTS files)
+	
+	#4 I dont understand, read doc if you want to know
+	foreach(file IN ITEMS ...)
+
+
 <div id="11"></div>
 
 # Compiler options
@@ -299,7 +393,72 @@ for example instead of CMAKE_CXX_FLAGS use CXX_FLAGS or whatever name you want a
 	include (CheckCXXCompilerFlags)
 	check_cxx_compiler_flag("-march=native" _march_native_works)
 
-<div id="9"></div>
+<div id="12"></div>
+
+# Platform Dependency
+
+### Detect operting system
+
+	#true if Linux
+	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+	endif()
+	#true if Windows
+	if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	endif()
+	#true if macOS
+	if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	endif()
+
+### Platform dependend code/operations
+**Set Preprocessor definition from CMake**
+**Sets preprocessor definition called IS_LINUX in all files regarding the target < targetname >**
+
+	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+		target_compile_definitions(< targetname > PUBLIC "IS_LINUX")
+	endif()
+	
+visibilities are the same as in target_compile_options
+
+### Detect Compiler
+**If the compiler is Intel, set IS_INTEL_CXX_COMPILER as preprocessor definition**
+
+	if(CMAKE_CXX_COMPILER_ID MATCHES Intel)
+		target_compile_definitions(< targetname > PUBLIC "IS_INTEL_CXX_COMPILER")
+	endif()
+
+	
+<div id="13"></div>
+
+# Hardware Dependency
+
+### Detect instruction set length
+**Set preprocessor definition  IS_64_BIT_ARCHITECTRUE in the target < targetname > if the instruction set has a length of 8 byte**
+
+	#check the size of a void pointer to determine the instruction length thus 32 or 64bit
+	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+		target_compile_definitions(< targetname > PUBLIC "IS_64_BIT_ARCHITECTURE")
+	else()
+		target_compile_definitions(< targetname > PUBLIC "IS_32_BIT_ARCHITECTURE")
+	endif()
+
+### Detect CPU Architecture
+### Set preprocessor definition called ARCHITECTURE to the architecture detected by CMake in < targetname >**
+
+	target_compile_definitions( < targetname > PUBLIC "ARCHITECTURE=${CMAKE_HOST_SYSTEM_PROCESSOR}" )
+
+example values cmake uses are "i386", "i686", "x86_64"
+	
+### Detect additional system/processor information
+**cmake_host_system_information fills the RESULT variable called _key with information gotten from a QUERY (key). key has to be a name of a specific information to gather, for example NUMER_OF_PHYSICAL_CORES**
+**configure_file changes preprocessor definitions with the same name as CMake used variables to the corresponding value. In this case only, if the preprocessor definitions has a @ before and after the name in the .h file**
+
+	foreach(key IN ITEMS NUMBER_OF_LOGICAL_CORES NUMBER_OF_PHYSICAL_CORES TOTAL_VIRTUAL_MEMORY AVAILABLE_VIRTUAL_MEMORY TOTAL_PHYSICAL_MEMORY AVAILABLE_PHYSICAL_MEMORY IS_64BIT HAS_FPU HAS_MMX HAS_MMX_PLUS HAS_SSE HAS_SSE2 HAS_SSE_FP HAS_SSE_MMX HAS_AMD_3DNOW HAS_AMD_3DNOW_PLUS HAS_IA64 OS_NAME OS_RELEASE OS_VERSION OS_PLATFORM)
+		cmake_host_system_information(RESULT _${key} QUERY ${key})
+	endforeach()
+	
+	configure_file(config.h.in config.h @ONLY)
+
+<div id="14"></div>
 
 # Configure Source Files
 
@@ -375,163 +534,7 @@ This replaces the 3 defines, because the PROJECT_VERSION_MAJOR, PROJECT_VERSION_
 it is possible to ensure non-broken defines with #cmakeinclude instead of #include.
 CMake then handles replacing #cmakeinclude < varname > with #include < varname >if the variables have usable values or with #undef < varname > if not.
 
-<div id="10"></div>
-
-# Loops
-
-### Foreach loop
-**!TAG! Set propertie of specific source file**
-**Use Foreach loop to set compile flags of specific source files. In this case loop through every source file in the list sources_with_lower_optimization and set the compiler flag O2**
-	
-	foreach(_source IN LISTS sources_with_lower_optimization)  
-		set_source_file_properties(${_source} PROPERTIES COMPILE_FLAGS O2)
-	endforeach()
-
-the foreach statement can also be written like this:
-
-	foreach(_source ${sources_with_lower_optimization}
-	
-### Get property of specific source file
-**Use foreach loop to get the compile flags of every source file in the list sources_with_lower_optimization**
-
-	foreach(_source ${sources_with_lower_optimization})  
-		get_source_file_property(_flags ${_source} COMPILE_FLAGS)  
-		message(STATUS "Source ${_source} has the following extra COMPILE_FLAGS: ${_flags}") 		
-	endforeach()
-get_source_file_property stores the type of property specified in arg3 from arg2 in arg1
-
-### Different ways to create a for loop
-
-	#boiler code
-	list(APPEND _files file1.cpp file2.cpp file3.cpp)	
-
-	#1 loop through every file in files
-	foreach(file ${files})
-	
-	#2 3 loops
-	foreach(file RANGE 3)
-	#2.1 from 1 to 3 in steps incremented by 1
-	foreach(file RANGE 1 3 1)
-	
-	#3 same as #1
-	foreach(file IN LISTS files)
-	
-	#4 I dont understand, read doc if you want to know
-	foreach(file IN ITEMS ...)
-
-<div id="12"></div>
-
-# Platform Dependency
-
-### Detect operting system
-
-	#true if Linux
-	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-	endif()
-	#true if Windows
-	if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	endif()
-	#true if macOS
-	if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-	endif()
-
-### Platform dependend code/operations
-**Set Preprocessor definition from CMake**
-**Sets preprocessor definition called IS_LINUX in all files regarding the target < targetname >**
-
-	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-		target_compile_definitions(< targetname > PUBLIC "IS_LINUX")
-	endif()
-	
-visibilities are the same as in target_compile_options
-
-### Detect Compiler
-**If the compiler is Intel, set IS_INTEL_CXX_COMPILER as preprocessor definition**
-
-	if(CMAKE_CXX_COMPILER_ID MATCHES Intel)
-		target_compile_definitions(< targetname > PUBLIC "IS_INTEL_CXX_COMPILER")
-	endif()
-	
-<div id="13"></div>
-
-# Hardware Dependency
-
-### Detect instruction set length
-**Set preprocessor definition  IS_64_BIT_ARCHITECTRUE in the target < targetname > if the instruction set has a length of 8 byte**
-
-	#check the size of a void pointer to determine the instruction length thus 32 or 64bit
-	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-		target_compile_definitions(< targetname > PUBLIC "IS_64_BIT_ARCHITECTURE")
-	else()
-		target_compile_definitions(< targetname > PUBLIC "IS_32_BIT_ARCHITECTURE")
-	endif()
-
-### Detect CPU Architecture
-### Set preprocessor definition called ARCHITECTURE to the architecture detected by CMake in < targetname >**
-
-	target_compile_definitions( < targetname > PUBLIC "ARCHITECTURE=${CMAKE_HOST_SYSTEM_PROCESSOR}" )
-
-example values cmake uses are "i386", "i686", "x86_64"
-	
-### Detect additional system/processor information
-**cmake_host_system_information fills the RESULT variable called _key with information gotten from a QUERY (key). key has to be a name of a specific information to gather, for example NUMER_OF_PHYSICAL_CORES**
-**configure_file changes preprocessor definitions with the same name as CMake used variables to the corresponding value. In this case only, if the preprocessor definitions has a @ before and after the name in the .h file**
-
-	foreach(key IN ITEMS NUMBER_OF_LOGICAL_CORES NUMBER_OF_PHYSICAL_CORES TOTAL_VIRTUAL_MEMORY AVAILABLE_VIRTUAL_MEMORY TOTAL_PHYSICAL_MEMORY AVAILABLE_PHYSICAL_MEMORY IS_64BIT HAS_FPU HAS_MMX HAS_MMX_PLUS HAS_SSE HAS_SSE2 HAS_SSE_FP HAS_SSE_MMX HAS_AMD_3DNOW HAS_AMD_3DNOW_PLUS HAS_IA64 OS_NAME OS_RELEASE OS_VERSION OS_PLATFORM)
-		cmake_host_system_information(RESULT _${key} QUERY ${key})
-	endforeach()
-	
-	configure_file(config.h.in config.h @ONLY)
-
-<div id="5"></div>
-
-# Find Libraries
-
-### Find library on the system
-
-**Look for package/library named < libraryname > with the < libraryversion> and set it as requirement of the project. CONFIG disables the module mode and uses CONFIG mode instead**
-**After this command, some variables are usually defined, check variables section**
-
-	find_package(< libraryname > < libraryversion > REQUIRED CONFIG)
-
-additional information:
-
-MODULE mode searches a file named Find< libraryname >.cmake and gets all required information about the library. Often the library path is obtained from an environment variable.
-CMake finds the Find< libraryname >.cmake file either through CMake's own defined .cmake files for many standard libraries which are located in the CMake/share/cmake/Modules path or through additional paths which can be provided by the CMAKE_MODULE_PATH variable.
-
-Read Find< libraryname >.cmake comment to see, which environment variable has to be set
-
-CONFIG mode searches for a file name < libraryname >Config.cmake additional paths to search in can be provided by the < libraryname >_DIR variable.
-
-### Find package and check for valid variables/paths
-**the package will only be considered found if the REQUIRED_VARS and VERSION_VAR is valid**
-	
-	find_package_handle_standard_args(< libraryname > FOUND_VAR found_vars REQUIRED_VARS path VERSION_VAR version)
-
-### Use IMPORTED type in target_link_libraries to use library defined compiler options/include directories etc.
-**Use the OpenMP::OpenMP_CXX library target to use the library defined C++ settings ( has to be available from the lib )**
-	find_package(OpenMP REQUIRED)
-	target_link_libraries( < targetname > PUBLIC OpenMP::OpenMP_CXX)
-
-### Print target properties
-**Print the OpenMP library defined properties such as compile options, include dirs and link libraries**
-	
-	include(CMakePrintHelpers)	
-	cmake_print_properties(TARGETS OpenMP::OpenMP_CXX PROPERTIES INTERFACE_COMPILE_OPTIONS INTERFACE_INCLUDE_DIRECTORIES INTERFACE_LINK_LIBRARIES )
-
-### Use only a COMPONENT from a library
-**Find the subcomponent filesystem in boost and link the target against it**
-
-	find_package(Boost 1.54 REQUIRED COMPONENTS filesystem)
-	target_link_libraries( < targetname > PUBLIC Boost::filesystem)
-
-### Use pgk-config to find libraries
-**Use the PkgConfig package to search for the ZeroMQ library with pkg_search_module**
-
-	find_package(PkgConfig REQUIRED QUIET)
-	pkg_search_module(ZeroMQ REQUIRED libzeromq libzmq lib0mq IMPORTED_TARGET)
-
-<div id="14"></div>
+<div id="15"></div>
 
 # Execute Terminal/Console Commands
 
@@ -569,7 +572,7 @@ A better approach is to use add_custom_target to invoke add_custom_command and l
 	#post build command
 	add_custom_command(TARGET < targetname > POST_BUILD COMMAND < command > VERBATIM)
 
-<div id="15"></div>
+<div id="16"></div>
 
 # File operations
 
@@ -601,7 +604,7 @@ A better approach is to use add_custom_target to invoke add_custom_command and l
 	
 another time to execute a command is PRE_BUILD. But this option only works with Visual Studio
 
-<div id="16"></div>
+<div id="17"></div>
 
 # Try to Compile
 
@@ -625,7 +628,7 @@ It uses the CMake variables CMAKE_REQUIRED_FLAGS, CMAKE_REQUIRED_DEFINITIONS, CM
 
 It is possible to debug the try_compile command if you run cmake with the --debug-trycompile flag
 
-<div id="17"></div>
+<div id="18"></div>
 
 # Functions and Macros
 
@@ -685,7 +688,7 @@ Then redefine the function and call variable_watch, which prints every change on
 	endif()
 This if statement defines a function called custom_include_guard and generates a DEPRECATION message. It also calls the _custom_include_guard function, which is to be deprecated for CMake 3.10 or higher. Finally the variable_watch(included_modules deprecate_variable) command calls the function deprecate_variable with the included_modules variable as an argument, every time included_modules is modified.
 
-<div id="18"></div>
+<div id="19"></div>
 
 # CMake Modules
 
