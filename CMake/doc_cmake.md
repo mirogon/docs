@@ -31,8 +31,6 @@
 ## 25. <a href="#25">Relevant Variables</a>
 ## 26. <a href="#26">Useful Examples and Additional Info</a>
 
-# Other
-
 <div id="1"></div>
 
 # **Command line**

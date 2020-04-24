@@ -1,26 +1,7 @@
 # **Overview**
-
-# **Basic**
-
-
-## 1. <a href="#1">Git configuration</a>
-## 2. <a href="#2">Git basics</a>
-- ## <a href="#3">Create git repository</a>
-- ## <a href="#4">Stage/Track files / Unstage/Untrack files</a>
-- ## <a href="#5">Creating a new commit from staged files</a>
-- ## <a href="#6">Ignore files or folders</a>
-- ## <a href="#7">Tags</a>
-- ## <a href="#8">Show changes since last commit</a>
-- ## <a href="#9">Remove or modify files</a>
-- ## <a href="#10">Show commit history</a>
-- ## <a href="#11">Undo things</a>
-- ## <a href="#12">Remote repositories/servers (Github/Gitlab/Bitbucket/...)</a>
- 
-## 3. <a href="#300">Branching</a>
-
-# **Advanced**
-
-
+## 1. [Git configuration](#Git-configuration)
+## 2. [Git basics](#Git-basics)
+## 3. [Branching](#Branching)
 ## 4. [Hosting your own Server](#Hosting-your-own-server)
 ## 5. [Contributing to a project](#Contributing-to-a-project)
 ## 6. [Maintaining a project](#maintaining-a-project)
@@ -39,19 +20,15 @@
 
 For a simple overview: **git < command > -h**
 
-File States:
 working files - staged files - commited files
 
 Documentation build from the book pro git. Get additional information from there or the official git documentation
 
 # **General information**
 
-- Git add tracks/stages files, which means git "marks" them to be in the next commit
 - Git saves every state of files every time you commit.
 - Git uses a pointer called HEAD to point to the commit currently at
 - The checkout command moves the HEAD pointer to a specific commit
-
-<div id="1"></div>
 
 # **Git configuration**
 ### **Show all applied configurations with their origins**
@@ -89,20 +66,13 @@ sets the core editor for git to vim
 
     git config --global core.autocrlf input
 
-<div id="2"></div>
-
 # **Git basics**
 
-
-<div id="3"></div>
-
-## **Create git repository**
-
-### Initialize git project at current path
+### **Initialize git project at current path**
 
     git init
 
-### Clone existing git project to current path
+### **Clone existing git project to current path**
 
     git clone < url > < destination >
 
@@ -110,17 +80,13 @@ clone git project from url to destination path <br>
 example: git clone https://github.com/libgit2/libgit2<br>
 clones libgit2 project
 
-<div id="4"></div>
-
-## **Stage or Unstage files**
-
-### Stage/Track files
+### **Tracking files / Stage files**
 
     git add < file/directory >
 
 starts to track/stage the file/s or files in a directory
 
-### Unstage file
+### **Untrack / Unstage files**
 
     git reset -- < file >
 
@@ -128,40 +94,11 @@ or
 
     git reset HEAD < file >
 
-### Unstage all files
-
-    git reset
-
-### Check status of tracked and untracked files
+### **Check status of tracked and untracked files**
 
     git status
 
-
-<div id="5"></div>
-
-## **Creating a new commit from staged files**
-
-    git commit
-
-or
-
-    git commit -m "commit-message"
-
-### Skipping the staging area / staging all tracked files and committing them
-
-    git commit -a
-
-### Redo/Replace last commit
-If you forgot to stage a file to a commit or want to change the commit message, its possible to do so with this command:
-
-    git commit -amend
-
-This only makes sense, if you add your forgotten file etc. first
-
-<div id="6"></div>
-
-## **Ignore files or folders**
-
+### **Ignore specific files**
 It's almost always a good idea to let git ignore certain files.
 A good example are all files in the build directory.<br>
 To let git ignore specific files, a .gitignore file in necessary.
@@ -180,85 +117,29 @@ build/ and bin/ ignores all files in these directories<br>
 There are many examples for gitignore files available on github:<br>
 https://github.com/github/gitignore
 
-<div id="7"></div>
-
-## **Tags**
-Git also supports tags, which is often used for versions
-
-### List tags
-
-    git tag
-
-### Filter git tag
-
-    git tag -l "V1.1*"
-
-lists all tags starting with "V1.1"
-
-### Creating a tag
-
-    git tag -a V1.1.0 -m "Version 1.1.0"
-
-creates an annotated tag called V1.1.0 with the message "Version 1.1.0"
-
-### Inspect tag
-
-    git show < tagname >
-
-Shows information about tag
-
-### Tag commit later
-
-    git tag -a < tagname > < commit_checksum >
-
-Example:
-
-    git tag -a V1.3.5 9fgh
-
-adds tag V1.3.5 to commit with commitchecksum 9fgh...
-
-### Delete tag
-
-    git tag -d < tagname >
-
-To delete it from the remote repo
-
-    git push < remote > --delete < tag >
-
-### Push tags to remote repo
-Unfortunately tags do not get transferred automatically when pushing to a repo, so you have to do it with this command
-
-    git push < remote > --tags
-
-### Checkout Tag files
-
-    git checkout 2.0.0
-
-If you do this, git is in detached HEAD state and you should only commit to a new 
-
-
-    git checkout -b new_branch v2.0.0
-
-Now you can make commits to the old files
-
-<div id="8"></div>
-
-## **Show changes since last commit**
+## **Viewing staged and unstaged changed**
 
 ### Show unstaged changes
 
     git diff
 
-### Show staged changes
+### Show stages changed
 
     git diff --staged
 
+## **Committing changed and staged files**
 
-<div id="9"></div>
+    git commit
 
-## **Remove or modify files**
+or
 
-### Removing files
+    git commit -m "commit-message"
+
+### **Skipping the staging area / staging all tracked files and committing them**
+
+    git commit -a
+
+## **Removing files**
 
     rm < file >
     git rm < file >
@@ -276,7 +157,7 @@ If a file was already staged, but you still want to remove it, you have to force
 
     git rm --staged < file >
 
-### Renaming files
+## **Renaming files**
 If you rename a file, but dont tell git, it will detect a deleted file and a newly created one, but you can either do that and git rm the old name and git add the new one or use the git mv command instead
 
     git mv README.md README
@@ -287,9 +168,7 @@ or
     git rm README.md
     git add README
 
-<div id="10"></div>
-
-## **Show commit history**
+## **View commit history**
 
     git log
 
@@ -313,20 +192,70 @@ One particular useful is -S which takes a string and only shows commits where th
 
     git log -S function_name
 
-<div id="11"></div>
-
 ## **Undoing things**
 
-### Revert changes from file to last commit( NOT RECOMMENDED )
+### Redo/Replace last commit
+If you forgot to stage a file to a commit or want to change the commit message, its possible to do so with this command:
+
+    git commit -amend
+
+This only makes sense, if you add your forgotten file etc. first
+
+### Unstage a file
+
+    git reset HEAD < file >
+
+removes the file from staging
+
+### Revert last change from file ( NOT RECOMMENDED )
 
     git checkout -- < file >
 
-### Revert all changed from all files to the last commit (NOT RECOMMENDED)
-
-    git reset --hard HEAD
-
 **IMPORTANT: the changes made are not saved, because git only makes backups of commited changes**
 
+### **Remote repositories/servers**
+
+You can connect your git project to remote servers to use them as host, centralized storage or backup<br>
+The most common ones are GitHub/Bitbucket/Gitlab
+
+### List remote repositories/servers
+
+    git remote
+
+Show more information with the -v argument
+
+### Inspect remote
+
+    git remote show < remotename >
+
+### Add new remote
+
+    git remote add < remotename > < url >
+
+### Rename remote
+
+    git remote rename < old_name > < new_name >
+
+### Remove remote
+
+    git remote rm < remotename >
+
+### Fetching from remote
+
+    git fetch < remote >
+
+fetches all files from remote to a new 
+
+
+### Fetching and merging from a remote (Pulling)
+
+    git pull < remote > < 
+     >
+
+### Pushing to a remote
+
+    git push < remote > < 
+     >
 
 ### **Tags**
 Git also supports tags, which is often used for versions
@@ -387,55 +316,6 @@ If you do this, git is in detached HEAD state and you should only commit to a ne
 
 Now you can make commits to the old files
 
-<div id="12"></div>
-
-## **Remote repositories/servers**
-
-You can connect your git project to remote servers to use them as host, centralized storage or backup<br>
-The most common ones are GitHub/Bitbucket/Gitlab
-
-### List remote repositories/servers
-
-    git remote
-
-Show more information with the -v argument
-
-### Inspect remote
-
-    git remote show < remotename >
-
-### Add new remote
-
-    git remote add < remotename > < url >
-
-### Rename remote
-
-    git remote rename < old_name > < new_name >
-
-### Remove remote
-
-    git remote rm < remotename >
-
-### Fetching from remote
-
-    git fetch < remote >
-
-fetches all files from remote to a new 
-
-
-### Fetching and merging from a remote (Pulling)
-
-    git pull < remote > < branch >
-
-### Pushing to a remote
-
-    git push < remote > < branch >
-
-**Example**
-
-    git push github master
-
-
 ### **Aliases**
 In git its possible to create aliases for commands
 
@@ -443,12 +323,9 @@ In git its possible to create aliases for commands
 
 This creates the alias ci for commit, so git ci would be the same as git commit
 
-<div id="300"></div>
-
 # **Branching**
 
-A branch is used to split a project to different developement states<br>
-The master branch is the default main branch
+A branch is simply said a pointer which points to a specific commit
 
 ### Show all branches
 
