@@ -6,7 +6,7 @@
 ## 1. <a href="#1">Git configuration</a>
 ## 2. <a href="#2">Git basics</a>
 - ## <a href="#3">Create git repository</a>
-- ## <a href="#4">Stage/Track files / Unstage/Untrack files</a>
+- ## <a href="#4">Stage files / Unstage files</a>
 - ## <a href="#5">Creating a new commit from staged files</a>
 - ## <a href="#6">Ignore files or folders</a>
 - ## <a href="#7">Tags</a>
@@ -46,7 +46,7 @@ Documentation build from the book pro git. Get additional information from there
 
 # **General information**
 
-- Git add tracks/stages files, which means git "marks" them to be in the next commit
+- Git add stages files, which means git "marks" them to be in the next commit
 - Git saves every state of files every time you commit.
 - Git uses a pointer called HEAD to point to the commit currently at
 - The checkout command moves the HEAD pointer to a specific commit
@@ -114,11 +114,11 @@ clones libgit2 project
 
 ## **Stage or Unstage files**
 
-### Stage/Track files
+### Stage files
 
     git add < file/directory >
 
-starts to track/stage the file/s or files in a directory
+starts to stage the file/s or files in a directory
 
 ### Unstage file
 
@@ -132,7 +132,7 @@ or
 
     git reset
 
-### Check status of tracked and untracked files
+### Check status of staged and unstaged files
 
     git status
 
@@ -147,7 +147,7 @@ or
 
     git commit -m "commit-message"
 
-### Skipping the staging area / staging all tracked files and committing them
+### Skipping the staging area / staging all staged files and committing them
 
     git commit -a
 
