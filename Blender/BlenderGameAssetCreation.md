@@ -84,13 +84,17 @@
 
 ## Important
 
-- 
+- ### Bake from PBR Material to texture in Diffuse material to check the result
+- ### Use HDRI and set metal roughness, so that its as low as possible without being able to see details from the hdri
+
 <br>
 <div id="6"></div>
 
 # Low poly model diffuse to texture baking
 
 ## Important
+
+- ### Use HDRI for baking
 
 <br>
 <div id="999"></div>
