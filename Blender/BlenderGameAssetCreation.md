@@ -24,6 +24,7 @@
 - ### Use snapping to excactly line up objects
 - ### Use a Collection for every seperate object and assign names from 1 to X for objects and collections
 - ### Use bevel mod workflow for smoothness of sharp edges and meshMACHINE Chamfer/Fillets for actual geometry
+- ### Think about what the model needs to be logical to come up with model ideas (example a rifle needs a barrel, main body, grip, magazine, bullet chamber, etc.)
 - ### Random features of model (example:_robot random amount of arms, etc.)
 - ### Bolts, Ingrave, Outgrave, Handle, Light, Grills, etc.
 - ### Look at other games and copy details/ideas
