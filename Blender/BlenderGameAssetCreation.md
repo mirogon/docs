@@ -19,6 +19,7 @@
 
 ## Important
 
+- ### Keep s cale of every object at 1,1,1
 - ### Details everywhere, so it does not look strange/empty
 - ### Use many simpler objects instead of less complicated objects
 - ### Use snapping to excactly line up objects
@@ -40,7 +41,9 @@
 - ### Remove/Hide bevel mod if you want to bake the bevels later
 - ### Remove every vertex that does not contribute to the geometry or could be useful for material seperation
 - ### Triangulate mesh at the end maybe with triangulate mod maybe not
-  
+- ### Use high poly details that define the silhouette, need shadows or are too big to bake to a normal map
+- ### Use the right shading with custom normals on the low poly model aswell
+
 <br>
 <div id="3"></div>
 
@@ -56,6 +59,7 @@
 - ### Select every object of model and go to edit mode
 - ### Work on part by part not every object at the same time, but after you went to edit mode with all objects
 - ### Use seam at every sharp/beveled edge
+- ### Increase scale of islands that have high detailed geometry
 <br>
 <div id="4"></div>
 
@@ -75,7 +79,7 @@
 - ### Mark all beveled edges as sharp
 - ### Use seam at every sharp/beveled edge
 - ### Use Cage extrusion or a Cage object
-- ### Use Subsurf mod on low poly and set mean create on every edge to 1, so you have a high poly model with the same shape to get a better baking result
+- ### Use Subsurf mod on low poly and set mean crease on every edge to 1, so you have a high poly model with the same shape to get a better baking result
 - ### A Displacement mod after the sub mod can also help with the distortion problem
 
 <br>
