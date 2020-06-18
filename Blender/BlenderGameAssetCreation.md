@@ -29,6 +29,7 @@
 - ### Random features of model (example:_robot random amount of arms, etc.)
 - ### Bolts, Ingrave, Outgrave, Handle, Light, Grills, etc.
 - ### Look at other games and copy details/ideas
+- ### Fix all topology problems, clamp all bevels, remove unnecessary vertices already
 
 <br>
 <div id="2"></div>
@@ -67,6 +68,8 @@
 
 ## Important
 
+- ### Check face orientation of HP model
+- ### Bake normal maps with 1 Samples, otherwise its time waste
 - ### Activate selected to active and use extrusion cage or cage object
 - ### Check for normals outside, if everything but the baking objects are hidden in rendered mode, edges have to be sharped right in the hp model
 - ### Select high poly model and then low poly model and bake using the cage to a texture in the material of the low poly model
