@@ -34,3 +34,24 @@ Uninstall network-manager, dhcpcd, other network managing programs/services and 
 
     #show all installed sdl libs
     ldconfig -p | grep -i SDL*
+
+# Mount Drive
+
+To mount a drive<br>
+
+    sudo mount [drive] [mounting_point]
+<br>
+
+example<br>
+
+    sudo mount /dev/sda1 /media/m1smr/DEV
+
+note: /media/m1smr/DEV has to exist
+
+## Mount NTFS drive with hibernation
+
+To remove hibernation state and easily mount the drive use<br>
+
+    sudo ntfsfix [device] <br>
+
+after this, just mount it normally
