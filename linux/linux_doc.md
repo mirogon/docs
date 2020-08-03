@@ -27,7 +27,7 @@ Uninstall network-manager, dhcpcd, other network managing programs/services and 
     #start wict ui
     sudo wicd-curses
 
-# Show installes libraries
+# Show installed libraries
 
     #show all
     ldconfig -p
@@ -47,6 +47,10 @@ example<br>
     sudo mount /dev/sda1 /media/m1smr/DEV
 
 note: /media/m1smr/DEV has to exist
+
+## Mount Drive read write
+
+    sudo mount -o rw [device] [mounting_point]
 
 ## Mount NTFS drive with hibernation
 
