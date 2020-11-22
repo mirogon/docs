@@ -1,0 +1,1 @@
+On important projects, make a file explaining the file structure of the project
