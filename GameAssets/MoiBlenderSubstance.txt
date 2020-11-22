@@ -1,0 +1,17 @@
+1. Preparation
+2. Modeling with MoI
+3. UV Mapping with Blender
+4. Shadin/Texturin with Substance Painter
+5. Rigging and Animating with Blender
+
+1. Preparation
+
+	1. Find references of object to create
+	2. Use one of them as main reference and manipulate the image with gimp to split/identify the different parts of the object
+	3. Make low poly/simplistic outline of asset
+
+2. Modeling with MoI
+	1. Import outline image into MoI
+	2. Model part py part
+		2.1 Make main shape (with construct, bool, fillet, etc.)
+		2.2 Fillets from big to small

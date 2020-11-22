@@ -1150,3 +1150,5 @@ example:
     global.h merge=ours
 
 always prefers this (our) version in merge conflicts for the file global.h
+
+
